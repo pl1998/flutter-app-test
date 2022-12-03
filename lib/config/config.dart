@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // 颜色配置
-class DQColor {
+class AppColors {
   static const Color primary = Color(0xfffbfbfb);
 
   static const Color success = Color(0xff07c160);
@@ -33,7 +33,8 @@ class DQColor {
       if (colorString[0] == '#') {
         colorString = colorString.substring(1);
       }
-      value = int.tryParse(colorString, radix: 16);
+      
+      value= int.tryParse(colorString, radix: 16)!;
       if (value != null) {
         if (value < 0xFF000000) {
           value += 0xFF000000;
