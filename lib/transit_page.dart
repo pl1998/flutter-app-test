@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_application_1/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/view/auth/signin_or_signup_page.dart';
 
 class TransitPage extends StatefulWidget {
   TransitPage({Key? key}) : super(key: key);
@@ -37,7 +38,7 @@ class _TransitPageState extends State<TransitPage> {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => HomePage(),
+          builder: (BuildContext context) => SignInOrSignOnPage(),
         ),
         (route) => false);
   }
@@ -48,12 +49,15 @@ class _TransitPageState extends State<TransitPage> {
       body: Stack(
         // 启动页图片F
         children: [
+          // Spacer(flex: 2),
           Image.asset(
-            'assets/images/login.png',
+            'assets/images/welcome_image.png',
             fit: BoxFit.cover,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
           ),
+          // Spacer(flex: 3,),
+
           // 跳过启动页
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
@@ -64,6 +68,11 @@ class _TransitPageState extends State<TransitPage> {
               // 跳过点击按钮事件
               onTap: _jumpHomePage,
             ),
+          ),
+          Text(
+            "欢迎使用go chat App 🎉🎉🎉",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline5!.copyWith(fontWeight: FontWeight.bold),
           ),
         ],
       ),

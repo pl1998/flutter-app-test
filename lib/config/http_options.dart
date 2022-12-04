@@ -6,7 +6,7 @@ class HttpOptions {
   // 接收超时时间
   static const int RECEIVE_TIMEOUT = 30000;
   // 接口请求地址
-  static const String BASE_URL = '127.0.0.1:8000/api';
+  static const String BASE_URL = '192.168.1.101:8000/api';
   // ws服务地址
-  static const String BASE_WS_URL = '127.0.0.1:8000/api';
+  static const String BASE_WS_URL = '192.168.1.101:8000/im';
 }

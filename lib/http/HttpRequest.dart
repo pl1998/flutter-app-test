@@ -10,7 +10,7 @@ class HttpRequest {
   // 工厂构造方法 外部调用 HttpRequest httpRequest = new HttpRequest()
   factory HttpRequest() => _instance;
 
-  late Dio dio;
+  static late Dio dio;
 
   // 内部构造方法
   HttpRequest._internal() {
@@ -59,7 +59,7 @@ class HttpRequest {
     dio.options.headers.addAll(headers);
   }
 
-  CancelToken _cancelToken = new CancelToken();
+  final CancelToken _cancelToken = new CancelToken();
   /*
    * 取消请求
    *
@@ -67,16 +67,18 @@ class HttpRequest {
    * 当一个cancel token取消时，所有使用该cancel token的请求都会被取消。
    * 所以参数可选
    */
-  void cancelRequests({CancelToken token}) {
+  void cancelRequests({ CancelToken? token}) {
     token ?? _cancelToken.cancel("cancelled");
   }
 
 
   /// 设置鉴权请求头
   Options setAuthorizationHeader(Options requestOptions) {
-    var  _token;
+     String?  _token;
+    // 静态变量数组
+
     if (_token != null) {
-      requestOptions.headers['Authorization'] = _token;
+      requestOptions.headers!["Authorization"] = _token;
     }
     return requestOptions;
   }
@@ -84,19 +86,42 @@ class HttpRequest {
   /// restful get 操作
   Future get(
     String path, {
-    required Map<String, dynamic> params,
-    required Options options,
-    required CancelToken cancelToken,
+     Map<String, dynamic>? params,
+    //  Options? options,
+     CancelToken? cancelToken,
   }) async {
-    Options requestOptions = setAuthorizationHeader(options ?? Options());
+    // Options requestOptions = setAuthorizationHeader(options ?? Options());
 
     Response response = await dio.get(
       path,
       queryParameters: params,
-      options: requestOptions,
-      cancelToken: cancelToken ?? _cancelToken,
+      // options: requestOptions,
+      cancelToken: cancelToken,
     );
     return response.data;
+  }
+    /// restful delete 操作
+  Future delete(
+    String path, {
+    required Map<String, dynamic> params,
+    required dynamic data,
+    required Options options,
+    required CancelToken cancelToken,
+  }) async {
+    Options requestOptions = setAuthorizationHeader(options);
+
+    try {
+      Response response = await dio.delete(
+        path,
+        data: data,
+        queryParameters: params,
+        options: requestOptions,
+        cancelToken: cancelToken,
+      );
+      return response.data;
+    } on DioError catch (e) {
+      throw e.error;
+    }
   }
 
   /// restful post 操作
@@ -104,8 +129,8 @@ class HttpRequest {
     String path, {
     required Map<String, dynamic> params,
     required dynamic data,
-    required Options options,
-    required CancelToken cancelToken,
+     Options? options,
+     CancelToken? cancelToken,
   }) async {
     Options requestOptions = setAuthorizationHeader(options ?? Options());
 
@@ -115,7 +140,30 @@ class HttpRequest {
         data: data,
         queryParameters: params,
         options: requestOptions,
-        cancelToken: cancelToken ?? _cancelToken,
+        cancelToken: cancelToken,
+      );
+      return response.data;
+    } on DioError catch (e) {
+      throw e.error;
+    }
+  }
+
+    Future put(
+    String path, {
+    required Map<String, dynamic> params,
+    required dynamic data,
+    required Options options,
+     CancelToken? cancelToken,
+  }) async {
+    Options requestOptions = setAuthorizationHeader(options);
+
+    try {
+      Response response = await dio.put(
+        path,
+        data: data,
+        queryParameters: params,
+        options: requestOptions,
+        cancelToken: cancelToken ,
       );
       return response.data;
     } on DioError catch (e) {
@@ -126,17 +174,17 @@ class HttpRequest {
   /// restful post form 表单提交操作
   Future postForm(
     String path, {
-    required Map<String, dynamic> params,
+     Map<String, dynamic>? params,
     required Options options,
-    required CancelToken cancelToken,
+     CancelToken? cancelToken,
   }) async {
-    Options requestOptions = setAuthorizationHeader(options ?? Options());
+    Options requestOptions = setAuthorizationHeader(options);
 
     Response response = await dio.post(
       path,
-      data: FormData.fromMap(params),
+      data: FormData.fromMap(params ?? {}),
       options: requestOptions,
-      cancelToken: cancelToken ?? _cancelToken,
+      cancelToken: cancelToken,
     );
     return response.data;
   }

@@ -26,6 +26,24 @@ class AppColors {
 
   static const Color border = Color(0xfff5f5f5);
 
+  // static const kPrimaryColor = Color(0xFF00BF6D);
+
+  static const kSecondaryColor = Color(0xFFFE9901);
+
+  static const kContentColorLightTheme = Color(0xFF1D1D35);
+
+  static const kContentColorDarkTheme = Color(0xFFF5FCF9);
+
+  static const kWarningColor = Color(0xFFF3BB1C);
+
+  static const kErrorColor = Color(0xFFF03738);
+
+  static const kDefaultPadding = 20.0;
+
+  static const kPrimaryColor = Color(0xFFC4ACE5);
+  static const kBtnPrimaryColor = Color(0xFF995FEA);
+  static const kPrimaryLightColor = Color(0xFFF1E6FF);
+
   // 颜色值转换
   static Color string2Color(String colorString) {
     int value = 0x00000000;

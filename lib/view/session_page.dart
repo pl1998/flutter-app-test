@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/components/top_nav.dart';
+import 'package:flutter_application_1/http/Http.dart';
+
 class SessionPage extends StatefulWidget {
   SessionPage({Key? key}) : super(key: key);
 
@@ -32,6 +34,10 @@ class _SessionPageState extends State<SessionPage>
       length: _tabs.length,
       vsync: this,
     );
+    
+    print(22222222222);
+    final result = Http.get('/sessions');
+    print(result);
   }
 
   @override
@@ -51,11 +57,11 @@ class _SessionPageState extends State<SessionPage>
         //   fontSize: 16,
         //   fontWeight:FontWeight.w900,
         // ),
-      
+
         backgroundColor: Colors.white,
         shadowColor: Colors.transparent,
-        elevation:0.2,
-       
+        elevation: 0.2,
+
         // bottom: TabBar(
         //   tabs: _tabs,
         //   controller: tabController,
