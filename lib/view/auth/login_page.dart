@@ -19,7 +19,7 @@ class _LoginPageStateState extends State<LoginPageState> {
     return Background(
       child: SingleChildScrollView(
         child: Responsive(
-          mobile: const MobileLoginScreen(),
+          mobile:  MobileLoginScreen(),
           desktop: Row(
             children: [
               const Expanded(
@@ -31,7 +31,7 @@ class _LoginPageStateState extends State<LoginPageState> {
                   children: const [
                     SizedBox(
                       width: 450,
-                      child:  LoginForm(),
+                      // child:  LoginForm(press:press),
                     ),
                   ],
                 ),
@@ -45,8 +45,12 @@ class _LoginPageStateState extends State<LoginPageState> {
 }
 
 class MobileLoginScreen extends StatelessWidget {
+
+  // final VoidCallback press;
+
   const MobileLoginScreen({
     Key? key,
+    // required this.press
   }) : super(key: key);
 
   @override

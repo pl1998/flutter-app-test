@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/auth/login_input.dart';
-import 'package:flutter_application_1/config/config.dart';
+import 'package:flutter_application_1/service/login_service.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginForm extends StatelessWidget {
+  // final VoidCallback press;
+
   const LoginForm({
     Key? key,
+    // required this.press
   }) : super(key: key);
 
   @override
@@ -13,57 +16,36 @@ class LoginForm extends StatelessWidget {
     return Form(
       child: Column(
         children: [
-          // SvgPicture.asset(
-          //   "assets/icons/login.svg",
-          // ),
           RoundedInputFiled(
             htmlText: '邮箱',
-            onChanged: (value) {},
+            onChanged: (value) {
+              print(value);
+            },
           ),
           PasswordInputField(
             htmlText: '密码',
-            onChanged: (value) {},
+            onChanged: (value) {
+              print(value);
+            },
             icon: Icons.lock,
           ),
-        
           RoundedButton(
-          htmlText: '登录',
-          press: (){},
-
-
+            htmlText: '登录',
+            press: () {
+              print("登录回调事件");
+              LoginService()
+                  .Login("2540463097@qq.com", "123456")()
+                  .then((value) => {print(value)});
+              // var result = Http.get("/sessions");
+              // print(result);
+              //
+            },
           ),
-          // const SizedBox(height: 16),
-          // Hero(
-          //   tag: "login_btn",
-          //   child: ElevatedButton(
-          //     onPressed: () {},
-          //     child: Text(
-          //       "登录".toUpperCase(),
-          //     ),
-          //   ),
-          // ),
-
-          // const SizedBox(height: 16),
-          // AlreadyHaveAnAccountCheck(
-          //   press: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) {
-          //           return SignUpScreen();
-          //         },
-          //       ),
-          //     );
-          //   },
-          // ),
         ],
       ),
     );
   }
 }
-
-
-
 
 class Responsive extends StatelessWidget {
   final Widget? mobile;

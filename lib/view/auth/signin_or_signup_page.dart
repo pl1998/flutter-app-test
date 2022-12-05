@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/components/auth/login_input.dart';
 import 'package:flutter_application_1/components/primary_button.dart';
+import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/view/auth/signin_page.dart';
 import 'login_page.dart';
@@ -27,28 +29,31 @@ class _SignInOrSignOnPageState extends State<SignInOrSignOnPage> {
                 height: 146,
               ),
               Spacer(),
-              PrimaryButton(
-                "登录",
-                press: () => Navigator.push(
+              RoundedButton(
+                htmlText: '登录',
+                press: ()=>{
+                  Navigator.push(
                     context,
-                  MaterialPageRoute(
+                    MaterialPageRoute(
                       builder: (context) => LoginPageState(),
-                    ),),
-                text: '登录',
-                color: HexColor('#43b244'),
+                    ),
+                  ),},
               ),
-              PrimaryButton(
-                "注册",
-                 press: () => Navigator.push(
+
+              RoundedButton(
+                htmlText: '注册',
+                color: AppColors.kPrimaryColor,
+                press: ()=>{
+                  Navigator.push(
                     context,
-                  MaterialPageRoute(
-                      builder: (context) => SigninPageState(),
-                    ),),
-                text: '注册',
+                    MaterialPageRoute(
+                      builder: (context) => LoginPageState(),
+                    ),
+                  ),},
               ),
               Spacer(
                 flex: 2,
-              )
+              ),
             ],
           ),
         ),

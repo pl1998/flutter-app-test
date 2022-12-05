@@ -99,10 +99,12 @@ class RoundedButton extends StatelessWidget {
   final String htmlText;
   final EdgeInsets padding;
   final VoidCallback press;
+  final Color color;
   const RoundedButton({
     Key? key,
     required this.htmlText,
     required this.press,
+    this.color = AppColors.kBtnPrimaryColor,
     this.padding = const  EdgeInsets.all(16 * 0.75),
   }) : super(key: key);
 
@@ -113,12 +115,12 @@ class RoundedButton extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(40)),
       ),
       padding: padding,
-      color: AppColors.kBtnPrimaryColor,
+      color: color,
       minWidth: double.infinity,
       onPressed: press,
       child: Text(
         htmlText,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.white,fontWeight:FontWeight.bold),
       ),
     );
   }

@@ -40,8 +40,8 @@ class AppColors {
 
   static const kDefaultPadding = 20.0;
 
-  static const kPrimaryColor = Color(0xFFC4ACE5);
-  static const kBtnPrimaryColor = Color(0xFF995FEA);
+  static const kPrimaryColor = Color(0xFFB291E7);
+  static const kBtnPrimaryColor = Color(0xFF9153EA);
   static const kPrimaryLightColor = Color(0xFFF1E6FF);
 
   // 颜色值转换
