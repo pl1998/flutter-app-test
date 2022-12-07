@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/config/http_options.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 /// 请求方法
 enum DioMethod {
   get,
@@ -10,10 +10,8 @@ enum DioMethod {
   patch,
   head,
 }
-final storage = new FlutterSecureStorage();
 
-// Read value
-Future<String?> token =  storage.read(key: "token");
+
 
 class DioUtil {
   /// 单例模式
@@ -48,11 +46,11 @@ class DioUtil {
   /// 请求拦截器
   void _onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     // 对非open的接口的请求参数全部增加userId
-    if (!options.path.contains("open")) {
-      options.queryParameters["userId"] = "xxx";
-    }
+    // if (!options.path.contains("open")) {
+    //   options.queryParameters["userId"] = "xxx";
+    // }
     // 头部添加token
-    options.headers["Authorization"] = token;
+    options.headers["Authorization"] = "";
     // 更多业务需求
     handler.next(options);
     // super.onRequest(options, handler);
@@ -108,6 +106,32 @@ class DioUtil {
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
       return response.data;
+    } on DioError catch (e) {
+      rethrow;
+    }
+  }
+
+  // post 请求
+  Future<String> post<T>(
+      String path, {
+        Map<String, dynamic>? params,
+        data,
+        CancelToken? cancelToken,
+        Options? options,
+        ProgressCallback? onSendProgress,
+        ProgressCallback? onReceiveProgress, Map<String, String>? formData,
+      }) async {
+
+    options ??= Options(method: "post");
+    try {
+      Response response;
+      response = await _dio.post(path,
+          data: data,
+          queryParameters: params,
+          options: options,
+          onSendProgress: onSendProgress,
+          onReceiveProgress: onReceiveProgress);
+      return response.toString();
     } on DioError catch (e) {
       rethrow;
     }

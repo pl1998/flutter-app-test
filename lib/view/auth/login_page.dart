@@ -17,6 +17,7 @@ class _LoginPageStateState extends State<LoginPageState> {
     String password = '' ;
 
     return Background(
+
       child: SingleChildScrollView(
         child: Responsive(
           mobile:  MobileLoginScreen(),
@@ -60,7 +61,7 @@ class MobileLoginScreen extends StatelessWidget {
       children: <Widget>[
         const LoginScreenTopImage(),
         Row(
-          children: const [
+          children:  [
             Spacer(),
             Expanded(
               flex: 8,

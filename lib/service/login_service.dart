@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter_application_1/http/dio_request.dart';
+import 'package:flutter_application_1/models/user_model.dart';
 
 class LoginService {
   /// 单例模式
@@ -13,17 +17,18 @@ class LoginService {
 
   /// 获取权限列表
   Login(String email,String password) async {
-
-Map<String, String> formData = {
-  'email': email,
-  'password': password,
-};
+    FormData formData = FormData.fromMap({"email": email, "password": password});
     /// 开启日志打印
     DioUtil.instance?.openLog();
     /// 发起网络接口请求
- print('登录');
-    var result = await DioUtil().request('/auth/login', method: DioMethod.post,formData:formData);
+
+    var result = await DioUtil().post('/auth/login' ,data:formData);
+    print('登录');
     print(result);
-    return result.data;
+    var jsonMap = jsonDecode(result);
+    var user = new UserModels.fromJson(jsonMap);
+
+    print(user.code);
+     print(user);
   }
 }

@@ -1,41 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/auth/login_input.dart';
 import 'package:flutter_application_1/service/login_service.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class LoginForm extends StatelessWidget {
-  // final VoidCallback press;
 
-  const LoginForm({
-    Key? key,
-    // required this.press
-  }) : super(key: key);
+class LoginForm extends StatefulWidget {
+
+ 
+
+  LoginForm({Key? key}) : super(key: key);
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  String email ='';
+  String password ='';
+
+  String? get input => null;
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+   return Form(
       child: Column(
         children: [
           RoundedInputFiled(
             htmlText: '邮箱',
             onChanged: (value) {
-              print(value);
+             email = value;
             },
           ),
           PasswordInputField(
             htmlText: '密码',
             onChanged: (value) {
-              print(value);
+              password = value;
             },
             icon: Icons.lock,
           ),
           RoundedButton(
             htmlText: '登录',
             press: () {
-              print("登录回调事件");
+              print("密码"+email);
+              print("密码"+password);
+              if (isEmail(email) == false) {
+                Fluttertoast.showToast(msg: "邮箱输入不正确");
+                return;
+              }
+
+               if (checkStringLength(password, 6) == false) {
+                Fluttertoast.showToast(msg: "密码位数太低了");
+                return;
+              }
+
               LoginService()
                   .Login("2540463097@qq.com", "123456")()
-                  .then((value) => {print(value)});
+                  .then((value) => {});
               // var result = Http.get("/sessions");
               // print(result);
               //
@@ -46,6 +68,7 @@ class LoginForm extends StatelessWidget {
     );
   }
 }
+
 
 class Responsive extends StatelessWidget {
   final Widget? mobile;

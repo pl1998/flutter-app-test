@@ -69,11 +69,11 @@ class _TransitPageState extends State<TransitPage> {
               onTap: _jumpHomePage,
             ),
           ),
-          Text(
-            "欢迎使用go chat App 🎉🎉🎉",
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline5!.copyWith(fontWeight: FontWeight.bold),
-          ),
+          // Text(
+          //   "欢迎使用go chat App 🎉🎉🎉",
+          //   textAlign: TextAlign.center,
+          //   style: Theme.of(context).textTheme.headline5!.copyWith(fontWeight: FontWeight.bold),
+          // ),
         ],
       ),
     );
