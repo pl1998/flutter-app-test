@@ -1,33 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/config/config.dart';
+import 'package:flutter_application_1/states/user_state.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class TopNavHead extends StatelessWidget {
-  const TopNavHead({Key? key}) : super(key: key);
+
+
+  TopNavHead({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Image.asset(
-        'assets/icons/logo.png',
-        height: 30,
-        width: 30,
-      ),
-      Expanded(
-        child: _searchMessage(),
-      ),
-      Image.asset(
-        'assets/icons/search_message.png',
-        height: 30,
-        width: 30,
-      ),
-      Image.asset(
-        'assets/icons/round_add.png',
-        height: 25,
-        width: 25,
-        color: AppColors.active,
-      ),
-     
-    ]);
+    return ScopedModelDescendant<AuthStateModel>(
+      builder: (context, child, model) {
+        return Row(children: [
+          Image.network(
+            model.avatar,
+            height: 30,
+            width: 30,
+          ),
+          Expanded(
+            child: _searchMessage(),
+          ),
+
+          Image.asset(
+            'assets/icons/search_message.png',
+            height: 30,
+            width: 30,
+          ),
+          Image.asset(
+            'assets/icons/round_add.png',
+            height: 25,
+            width: 25,
+            color: AppColors.active,
+          ),
+
+        ]);
+      },
+    );
+
   }
 
   Widget _searchMessage() {

@@ -7,6 +7,8 @@ part 'user_model.g.dart';
 class UserModels{
   final int  code;
   final String  message;
+
+  @JsonKey(nullable: true)
   final Data  data;
   final int  HttpCode;
 

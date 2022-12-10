@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter_application_1/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/states/state.dart';
 import 'package:flutter_application_1/view/auth/signin_or_signup_page.dart';
+import 'package:flutter_application_1/view/session_page.dart';
 
 class TransitPage extends StatefulWidget {
   TransitPage({Key? key}) : super(key: key);
@@ -21,6 +23,7 @@ class _TransitPageState extends State<TransitPage> {
   @override
   void initState() {
     super.initState();
+    // SpUtils.remove("token");
     // 倒计时组件 每秒执行一次
     Timer.periodic(Duration(milliseconds: 1000), (timer) {
       setState(() {
@@ -35,10 +38,13 @@ class _TransitPageState extends State<TransitPage> {
   // 跳转首页
   void _jumpHomePage() {
     _timer?.cancel();
+    SpUtils.clear();
+    var token = SpUtils.getString("token");
+
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => SignInOrSignOnPage(),
+          builder: (BuildContext context) => (token == null || token.isEmpty) ? SignInOrSignOnPage() : HomePage(),
         ),
         (route) => false);
   }

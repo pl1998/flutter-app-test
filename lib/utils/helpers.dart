@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 // 转化web颜色到Color
 class  HexColor extends Color {
   static int getColorFromHex(String hexColor) {
@@ -28,4 +28,10 @@ bool checkStringLength(String input, int length) {
 
  return input.length >= length;
 
+}
+
+showToast(String msg ){
+  Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      webPosition: "center");
 }

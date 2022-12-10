@@ -1,9 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/auth/login_input.dart';
+import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/service/login_service.dart';
+import 'package:flutter_application_1/states/user_state.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_application_1/states/state.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../../home_page.dart';
 
 
 class LoginForm extends StatefulWidget {
@@ -43,24 +48,49 @@ class _LoginFormState extends State<LoginForm> {
           RoundedButton(
             htmlText: '登录',
             press: () {
-              print("密码"+email);
-              print("密码"+password);
               if (isEmail(email) == false) {
-                Fluttertoast.showToast(msg: "邮箱输入不正确");
+                showToast("邮箱输入不正确");
                 return;
               }
-
                if (checkStringLength(password, 6) == false) {
-                Fluttertoast.showToast(msg: "密码位数太低了");
-                return;
+                 showToast("密码位数太低了");
+                 return;
               }
+              LoginService().Login(email, password).then((result){
 
-              LoginService()
-                  .Login("2540463097@qq.com", "123456")()
-                  .then((value) => {});
-              // var result = Http.get("/sessions");
-              // print(result);
-              //
+                try {
+                  var jsonMap = jsonDecode(result);
+                  var user = new UserModels.fromJson(jsonMap);
+                  if (user.code == 200) {
+                    showToast("登录成功");
+                    SpUtils.setString("token", user.data.token);
+                    SpUtils.set("user", user.toString());
+                    AuthStateModel model = ScopedModel.of<AuthStateModel>(context);
+                    model.avatar = user.data.avatar;
+                    model.id = user.data.id;
+                    model.token = user.data.token;
+                    model.name = user.data.name;
+                    model.ttl = user.data.ttl;
+                    model.expireTime = user.data.expire_time;
+                    model.uid = user.data.uid;
+                    model.increment();
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => HomePage(),
+                        ),
+                            (route) => false);
+                  } else{
+                    showToast(user.message);
+                  }
+                } on FormatException {
+                  showToast('登录失败');
+                  // 这里是处理FormatException类型的异常
+                } on Exception {
+                  showToast('网络异常');
+                  // 这里是处理其他类型的异常
+                }
+              });
             },
           ),
         ],

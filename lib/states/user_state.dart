@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-class AuthState {
-  final String? email;
-  final String? password;
 
-  AuthState(this.email,this.password);
+class AuthStateModel extends Model {
+   late int  id;
+   late String  uid;
+   late String  name;
+   late String  avatar;
+   late String  email;
+   late String  token;
+   late int  expireTime;
+   late int  ttl;
+
+   void increment(){
+     notifyListeners();
+   }
 }

@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/top_nav.dart';
+import 'package:flutter_application_1/models/user_model.dart';
+import 'package:flutter_application_1/states/state.dart';
 
 class SessionPage extends StatefulWidget {
   SessionPage({Key? key}) : super(key: key);
@@ -23,10 +27,12 @@ final List<Widget> _tabsContent = [
 class _SessionPageState extends State<SessionPage>
     with TickerProviderStateMixin {
   TabController? tabController;
-
   @override
+
+
   void initState() {
-    super.initState();
+     print("result");
+     super.initState();
     tabController = TabController(
       length: _tabs.length,
       vsync: this,

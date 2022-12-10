@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/config/http_options.dart';
+import 'package:flutter_application_1/states/state.dart';
 
 /// 请求方法
 enum DioMethod {
@@ -50,7 +51,7 @@ class DioUtil {
     //   options.queryParameters["userId"] = "xxx";
     // }
     // 头部添加token
-    options.headers["Authorization"] = "";
+    options.headers["Authorization"] = SpUtils.getString("token");
     // 更多业务需求
     handler.next(options);
     // super.onRequest(options, handler);

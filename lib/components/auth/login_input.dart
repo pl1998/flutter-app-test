@@ -47,10 +47,6 @@ class RoundedInputFiled extends StatelessWidget {
           ),
           hintText: htmlText,
           border: InputBorder.none,
-          // suffixIcon: Icon(
-          //   Icons.visibility ,
-          //   color: AppColors.kPrimaryLightColor,
-          // ),
         ),
         style: TextStyle(color: AppColors.kPrimaryLightColor),
       ),
@@ -105,7 +101,7 @@ class RoundedButton extends StatelessWidget {
     required this.htmlText,
     required this.press,
     this.color = AppColors.kBtnPrimaryColor,
-    this.padding = const  EdgeInsets.all(16 * 0.75),
+    this.padding = const  EdgeInsets.all(17 * 0.75),
   }) : super(key: key);
 
   @override
