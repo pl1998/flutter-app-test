@@ -1,23 +1,43 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/states/state.dart';
 import 'package:flutter_application_1/transit_page.dart';
 import 'package:flutter_application_1/config/app_theme.dart';
 import 'package:flutter_application_1/states/user_state.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import 'models/session_model.dart';
+
 void main()  {
+  // 设置顶部菜单栏透明
   final authStateModel =  AuthStateModel();
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent)
+  );
+
+  // 设置用户model
   runApp(ScopedModel<AuthStateModel>(
     model:authStateModel,
-    child:const MyApp()
+    child: MyApp()
   ));
+
+  // 执行初始化任务 应用加载 读取缓存 加载state
   init();
 
 
 }
 void init() async{
+  //执行一些初始化操作
  await SpUtils.getInstance();
+ var _sessionList = SpUtils.getString("sessionList");
+ if (_sessionList.toString().isNotEmpty) {
+   var jsonMap = json.decode(_sessionList.toString());
+   new SessionModels.fromJson(jsonMap);
+ }
+
 }
+
 
 
 class MyApp extends StatelessWidget {
@@ -26,7 +46,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Chat Im',
       debugShowCheckedModeBanner: false,

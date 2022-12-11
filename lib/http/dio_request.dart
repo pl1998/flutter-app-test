@@ -78,7 +78,7 @@ class DioUtil {
   }
 
   /// 请求类
-  Future<T> request<T>(
+  Future<String> request<T>(
     String path, {
     DioMethod method = DioMethod.get,
     Map<String, dynamic>? params,
@@ -106,7 +106,7 @@ class DioUtil {
           options: options,
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
-      return response.data;
+      return response.toString();
     } on DioError catch (e) {
       rethrow;
     }

@@ -38,13 +38,14 @@ class _TransitPageState extends State<TransitPage> {
   // 跳转首页
   void _jumpHomePage() {
     _timer?.cancel();
-    SpUtils.clear();
+
     var token = SpUtils.getString("token");
 
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => (token == null || token.isEmpty) ? SignInOrSignOnPage() : HomePage(),
+          // builder: (BuildContext context) => HomePage(),
         ),
         (route) => false);
   }

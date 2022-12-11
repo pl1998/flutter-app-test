@@ -5,7 +5,6 @@ import 'package:flutter_application_1/view/me_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
-
   @override
   State<HomePage> createState() => _HomePageState();
 }

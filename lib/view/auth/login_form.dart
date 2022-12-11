@@ -60,8 +60,9 @@ class _LoginFormState extends State<LoginForm> {
 
                 try {
                   var jsonMap = jsonDecode(result);
-                  var user = new UserModels.fromJson(jsonMap);
-                  if (user.code == 200) {
+
+                  if (jsonMap['code'] == 200) {
+                    var user = new UserModels.fromJson(jsonMap);
                     showToast("登录成功");
                     SpUtils.setString("token", user.data.token);
                     SpUtils.set("user", user.toString());
@@ -81,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                             (route) => false);
                   } else{
-                    showToast(user.message);
+                    showToast(jsonMap['message']);
                   }
                 } on FormatException {
                   showToast('登录失败');

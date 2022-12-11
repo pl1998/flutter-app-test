@@ -16,8 +16,9 @@ class TopNavHead extends StatelessWidget {
         return Row(children: [
           Image.network(
             model.avatar,
-            height: 30,
-            width: 30,
+            height: 40,
+            width: 40,
+            fit: BoxFit.cover,
           ),
           Expanded(
             child: _searchMessage(),
