@@ -7,9 +7,12 @@ import 'package:flutter_application_1/config/app_theme.dart';
 import 'package:flutter_application_1/states/user_state.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'models/session_model.dart';
+import 'models/user_model.dart';
+
 
 void main()  {
+  // 执行初始化任务 应用加载 读取缓存 加载state
+
   // 设置顶部菜单栏透明
   final authStateModel =  AuthStateModel();
   SystemChrome.setSystemUIOverlayStyle(
@@ -21,21 +24,21 @@ void main()  {
     model:authStateModel,
     child: MyApp()
   ));
-
-  // 执行初始化任务 应用加载 读取缓存 加载state
   init();
+
 
 
 }
 void init() async{
   //执行一些初始化操作
  await SpUtils.getInstance();
- var _sessionList = SpUtils.getString("sessionList");
- if (_sessionList.toString().isNotEmpty) {
-   var jsonMap = json.decode(_sessionList.toString());
-   new SessionModels.fromJson(jsonMap);
- }
 
+ // var token = SpUtils.getString("token");
+
+ // if(token!= null && token.isNotEmpty) {
+ //   print("user");
+ //   print(user);
+ // }
 }
 
 

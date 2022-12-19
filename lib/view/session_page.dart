@@ -5,7 +5,9 @@ import 'package:flutter_application_1/config/config.dart';
 import 'package:flutter_application_1/models/session_model.dart';
 import 'package:flutter_application_1/service/session_service.dart';
 import 'package:flutter_application_1/states/state.dart';
+import 'package:flutter_application_1/states/user_state.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class SessionPage extends StatefulWidget {
   SessionPage({Key? key}) : super(key: key);
@@ -20,37 +22,57 @@ const List<Tab> _tabs = [
   Tab(text: "我的"),
 ];
 
-final List<Widget> _tabsContent = [
-  Text('11111'),
-  // Text('11111'),
-  // Text('11111'),
-];
-
 class _SessionPageState extends State<SessionPage>
     with TickerProviderStateMixin {
   TabController? tabController;
 
   List<SessionModelsData> _sessionData = [];
+  var users;
+  var list;
 
   @override
   void initState() {
     super.initState();
+    list = SpUtils.get("sessionList");
+    AuthStateModel model = ScopedModel.of<AuthStateModel>(context);
 
-    SessionService().GetSessions().then((result) {
-      try {
-        var jsonMap = json.decode(result);
-        if (jsonMap['code'] == 200) {
-          SpUtils.setString("sessionList", result);
-          var session = new SessionModels.fromJson(jsonMap);
-          _sessionData = session.data;
-        } else {
-          showToast('加载异常');
+    if (list == null) {
+      SessionService().GetSessions().then((result) {
+        try {
+          var jsonMap = json.decode(result);
+          if (jsonMap['code'] == 200) {
+            SpUtils.setMap("sessionList", jsonMap);
+            var session = new SessionModels.fromJson(jsonMap);
+            setState(() {
+              _sessionData = session.data;
+              users = SpUtils.get("user");
+              model.setDataEvent(
+                  users['id'],
+                  users['uid'],
+                  users['name'],
+                  users['avatar'],
+                  users['email']);
+            });
+          } else {
+            showToast('加载异常');
+          }
+        } catch (e, stack) {
+          showToast('网络异常');
+          // 这里是处理FormatException类型的异常
         }
-      } catch (e, stack) {
-        showToast('网络异常');
-        // 这里是处理FormatException类型的异常
-      }
-    });
+      });
+    } else {
+      var session = new SessionModels.fromJson(list!);
+      setState(() {
+        _sessionData = session.data;
+        users = SpUtils.get("user");
+        print(users);
+        model.setDataEvent(users['id'], users['uid'], users['name'],
+            users['avatar'], users['email']);
+
+      });
+    }
+
     tabController = TabController(
       length: _tabs.length,
       vsync: this,
@@ -75,12 +97,14 @@ class _SessionPageState extends State<SessionPage>
       ),
       body: Column(
         children: [
-          Expanded( child: ListView.builder(
-            itemCount: _sessionData.length,
-            itemBuilder: (context, index) => SessionCard(
-              sessionList: _sessionData[index],
+          Expanded(
+            child: ListView.builder(
+              itemCount: _sessionData.length,
+              itemBuilder: (context, index) => SessionCard(
+                sessionList: _sessionData[index],
+              ),
             ),
-          ),)
+          )
         ],
       ),
     );
@@ -108,65 +132,68 @@ class SessionCard extends StatelessWidget {
               Positioned(
                 right: 0,
                 bottom: 0,
-                child:  Container(
+                child: Container(
                   height: 13,
                   width: 13,
                   decoration: BoxDecoration(
                     color: AppColors.success,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color:Theme.of(context).scaffoldBackgroundColor,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       width: 3,
                     ),
                   ),
                 ),
               ),
-              Positioned(
-                left: 0,
-                top: 0,
-                child:  Container(
-                  height: 13,
-                  width: 13,
-                  decoration: BoxDecoration(
-                    color: AppColors.success,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color:Theme.of(context).scaffoldBackgroundColor,
-                      width: 3,
-                    ),
-                  ),
-                ),
-              )
+              // Positioned(
+              //   left: 0,
+              //   top: 0,
+              //   child:  Container(
+              //     height: 13,
+              //     width: 13,
+              //     decoration: BoxDecoration(
+              //       color: AppColors.danger,
+              //       shape: BoxShape.circle,
+              //       // border: Border.all(
+              //       //   color:Theme.of(context).scaffoldBackgroundColor,
+              //       //   width: 3,
+              //       // ),
+              //     ),
+              //   ),
+              // )
             ],
           ),
-
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 17,),
-              child:   Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    sessionList.name,
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 17,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  sessionList.name,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Opacity(
+                  opacity: 0.64,
+                  child: Text(
+                    "你们已经是好友了 快来一起聊天吧",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 13),
                   ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Opacity(
-                    opacity: 0.64,
-                    child: Text(
-                      "你们已经是好友了 快来一起聊天吧",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 13),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ),
-          Opacity(child: Text("3分钟前"),opacity: 0.7,)
+                ),
+              ],
+            ),
+          )),
+          Opacity(
+            child: Text("3分钟前"),
+            opacity: 0.7,
+          )
         ],
       ),
     );

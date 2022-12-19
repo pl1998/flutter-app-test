@@ -10,11 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../../home_page.dart';
 
-
 class LoginForm extends StatefulWidget {
-
- 
-
   LoginForm({Key? key}) : super(key: key);
 
   @override
@@ -22,20 +18,20 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  String email ='';
-  String password ='';
+  String email = '';
+  String password = '';
 
   String? get input => null;
 
   @override
   Widget build(BuildContext context) {
-   return Form(
+    return Form(
       child: Column(
         children: [
           RoundedInputFiled(
             htmlText: '邮箱',
             onChanged: (value) {
-             email = value;
+              email = value;
             },
           ),
           PasswordInputField(
@@ -52,36 +48,33 @@ class _LoginFormState extends State<LoginForm> {
                 showToast("邮箱输入不正确");
                 return;
               }
-               if (checkStringLength(password, 6) == false) {
-                 showToast("密码位数太低了");
-                 return;
+              if (checkStringLength(password, 6) == false) {
+                showToast("密码位数太低了");
+                return;
               }
-              LoginService().Login(email, password).then((result){
-
+              LoginService().Login(email, password).then((result) {
                 try {
                   var jsonMap = jsonDecode(result);
-
                   if (jsonMap['code'] == 200) {
                     var user = new UserModels.fromJson(jsonMap);
-                    showToast("登录成功");
                     SpUtils.setString("token", user.data.token);
-                    SpUtils.set("user", user.toString());
-                    AuthStateModel model = ScopedModel.of<AuthStateModel>(context);
-                    model.avatar = user.data.avatar;
-                    model.id = user.data.id;
-                    model.token = user.data.token;
-                    model.name = user.data.name;
-                    model.ttl = user.data.ttl;
-                    model.expireTime = user.data.expire_time;
-                    model.uid = user.data.uid;
-                    model.increment();
+                    SpUtils.setMap("user", jsonMap['data']);
+                    AuthStateModel model =
+                        ScopedModel.of<AuthStateModel>(context);
+                    model.setDataEvent(
+                        user.data.id,
+                        user.data.uid,
+                        user.data.name,
+                        user.data.avatar,
+                        user.data.email);
+                    showToast("登录成功");
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) => HomePage(),
                         ),
-                            (route) => false);
-                  } else{
+                        (route) => false);
+                  } else {
                     showToast(jsonMap['message']);
                   }
                 } on FormatException {
@@ -99,7 +92,6 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 }
-
 
 class Responsive extends StatelessWidget {
   final Widget? mobile;

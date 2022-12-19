@@ -11,6 +11,7 @@ class TopNavHead extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return ScopedModelDescendant<AuthStateModel>(
       builder: (context, child, model) {
         return Row(children: [
