@@ -8,5 +8,5 @@ class HttpOptions {
   // 接口请求地址
   static const String BASE_URL = 'https://im.pltrue.top/api';
   // ws服务地址
-  static const String BASE_WS_URL = 'https://im.pltrue.top/im';
+  static const String BASE_WS_URL = 'https://im.pltrue.top/im/connent?token=';
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/channel/socket_utils.dart';
 import 'package:flutter_application_1/states/state.dart';
 import 'package:flutter_application_1/transit_page.dart';
 import 'package:flutter_application_1/config/app_theme.dart';
@@ -33,12 +34,11 @@ void init() async{
   //执行一些初始化操作
  await SpUtils.getInstance();
 
- // var token = SpUtils.getString("token");
+ var token = SpUtils.getString("token");
 
- // if(token!= null && token.isNotEmpty) {
- //   print("user");
- //   print(user);
- // }
+ if(token!= null && token.isNotEmpty) {
+   SocketUtils().initSocket();
+ }
 }
 
 

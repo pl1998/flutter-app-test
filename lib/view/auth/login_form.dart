@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/channel/socket_utils.dart';
 import 'package:flutter_application_1/components/auth/login_input.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/service/login_service.dart';
@@ -68,6 +69,7 @@ class _LoginFormState extends State<LoginForm> {
                         user.data.avatar,
                         user.data.email);
                     showToast("登录成功");
+                    SocketUtils().initSocket();
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
